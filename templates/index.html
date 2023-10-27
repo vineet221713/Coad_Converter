@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    
+        h1 {
+            text-align: center;
+        }
+    
+        #conversion-form {
+            margin: 20px auto;
+            width: 300px;
+            text-align: center;
+        }
+    
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+    
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+    
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #0056b3;
+        }
+    
+        #code-result {
+            margin: 20px auto;
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Code Converter</h1>
+    <form id="conversion-form">
+        <input type="text" id="keyword" placeholder="Enter a keyword">
+        <select id="language">
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c++">C++</option>
+            <!-- Add more language options as needed -->
+        </select>
+        <button type="button" onclick="convertCode()">Convert</button>
+    </form>
+    <div  id="code-result">
+       
+        <!-- Converted code will be displayed here -->
+    </div>
+    <script>
+        function convertCode() {
+            var keyword = document.getElementById('keyword').value;
+            var language = document.getElementById('language').value;
+
+            fetch('/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Set the content type to JSON
+                    // You can add other headers if needed
+                  },
+                body: JSON.stringify({
+                    "keyword":keyword,
+                    'language':language
+                }),
+                
+               // body: 'keyword=' + keyword + 'language=' + language
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('code-result').innerHTML = '<pre>' + data.code + '</pre>';
+            });
+        }
+    </script>
+</body>
+</html>
